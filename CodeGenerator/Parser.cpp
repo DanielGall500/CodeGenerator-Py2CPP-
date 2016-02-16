@@ -66,9 +66,35 @@ void Parser::Parse(std::vector<char> &input, std::vector<char> output)
 
 void Parser::generateBoilerPlate()
 {
-	for (unsigned int i = 0; i <= namespaces.size(); i++)
+	int linesUsed = 0;
+
+	//handle includes
+	for (unsigned int i = 0; i <= includes.size(); i++)
 	{
-		std::string incStatement = "#include " + namespaces[i];
-		generatedCode.insert(generatedCode.begin() += i,incStatement);
+		std::string incStatement = "#include " + includes[i];
+		generatedCode.insert(generatedCode.begin() += i, incStatement);
+
+		if (i == includes.size())
+			addLine(i + 1);
+
+		linesUsed = i;
 	}
+
+	//handle namespaces
+	for (unsigned int i = 1; i <= namespaces.size(); i++)
+	{
+		std::string namespc = "using namespace " + namespaces[i];
+		generatedCode.insert(generatedCode.begin() += (linesUsed + i), namespc);
+
+		if (i == namespaces.size())
+		{
+			linesUsed += i + 1;
+			addLine(linesUsed);
+		}
+	}
+}
+
+void Parser::addLine(int numWhere)
+{
+	generatedCode.insert(generatedCode.begin() += numWhere, "/whitespace/");
 }

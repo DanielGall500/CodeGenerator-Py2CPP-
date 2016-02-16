@@ -12,6 +12,7 @@ public:
 
 	void Parse(std::vector<char> &input, std::vector<char> output);
 	void generateBoilerPlate(); //generates the boilerplate code
+	void addLine(int numWhere);
 
 private:
 	std::vector<std::string> wordBuffer;
