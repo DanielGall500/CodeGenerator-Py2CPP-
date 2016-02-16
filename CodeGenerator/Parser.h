@@ -21,6 +21,8 @@ private:
 	std::vector<std::string> includes;
 	std::vector<std::string> namespaces;
 
+	std::string main;
+
 
     std::string generatePRINT(std::string strToPrint);
 	int findIndex(std::vector<std::string> vec, std::string element);

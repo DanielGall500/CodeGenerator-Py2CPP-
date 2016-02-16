@@ -62,6 +62,8 @@ void Parser::Parse(std::vector<char> &input, std::vector<char> output)
 
 		iter++;
 	}
+
+	generatedCode.push_back("}"); //must be final line in generated code
 }
 
 void Parser::generateBoilerPlate()
@@ -71,7 +73,7 @@ void Parser::generateBoilerPlate()
 	//handle includes
 	for (unsigned int i = 0; i <= includes.size(); i++)
 	{
-		std::string incStatement = "#include " + includes[i];
+		std::string incStatement = "#include " + includes[i] + ";";
 		generatedCode.insert(generatedCode.begin() += i, incStatement);
 
 		if (i == includes.size())
@@ -83,7 +85,7 @@ void Parser::generateBoilerPlate()
 	//handle namespaces
 	for (unsigned int i = 1; i <= namespaces.size(); i++)
 	{
-		std::string namespc = "using namespace " + namespaces[i];
+		std::string namespc = "using namespace " + namespaces[i] + ";";
 		generatedCode.insert(generatedCode.begin() += (linesUsed + i), namespc);
 
 		if (i == namespaces.size())
@@ -92,6 +94,14 @@ void Parser::generateBoilerPlate()
 			addLine(linesUsed);
 		}
 	}
+
+	//handle main function
+	main = "int main()";
+
+	linesUsed++;
+	generatedCode.insert(generatedCode.begin() += linesUsed, main);
+	linesUsed++;
+	generatedCode.insert(generatedCode.begin() += linesUsed, "{");
 }
 
 void Parser::addLine(int numWhere)
