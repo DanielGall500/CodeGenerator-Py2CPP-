@@ -32,7 +32,10 @@ std::string Parser::generatePRINT(std::string strToPrint)
 void Parser::Parse(std::vector<char> &input, std::vector<char> output)
 {
 	if (!input.empty())
+	{
 		includes.push_back("\"stdafx.h\"");
+		namespaces.push_back("std");
+	}
 
 	std::string builtWord;
 	for (char &c : input)
@@ -58,5 +61,14 @@ void Parser::Parse(std::vector<char> &input, std::vector<char> output)
 
 
 		iter++;
+	}
+}
+
+void Parser::generateBoilerPlate()
+{
+	for (unsigned int i = 0; i <= namespaces.size(); i++)
+	{
+		std::string incStatement = "#include " + namespaces[i];
+		generatedCode.insert(generatedCode.begin() += i,incStatement);
 	}
 }
