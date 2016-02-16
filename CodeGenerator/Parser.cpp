@@ -11,6 +11,12 @@ Parser::~Parser()
 {
 }
 
+int Parser::findIndex(std::vector<std::string> vec, std::string element)
+{
+	auto it = std::find(vec.begin(), vec.end(), element);
+	return std::distance(vec.begin(),it);
+}
+
 /*
 Commands:
 CREATE
@@ -25,6 +31,9 @@ std::string Parser::generatePRINT(std::string strToPrint)
 
 void Parser::Parse(std::vector<char> &input, std::vector<char> output)
 {
+	if (!input.empty())
+		includes.push_back("\"stdafx.h\"");
+
 	std::string builtWord;
 	for (char &c : input)
 	{
@@ -37,9 +46,17 @@ void Parser::Parse(std::vector<char> &input, std::vector<char> output)
 		}
     }
 
+
+	unsigned int iter = 0;
 	for (std::string word : wordBuffer)
 	{
 		if (word == commandPrint)
-			generatePRINT(wordBuffer[std::distance(wordBuffer.begin(), word.]);
+		{
+			generatedCode.push_back(generatePRINT(wordBuffer[iter++]));
+			includes.push_back("<iostream>");
+		}
+
+
+		iter++;
 	}
 }

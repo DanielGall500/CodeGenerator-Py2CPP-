@@ -20,6 +20,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	ofstream output;
 
 	vector<char> byteVector(0);
+
 	string line;
 	
 	input.open(inputDir, ios::in);
