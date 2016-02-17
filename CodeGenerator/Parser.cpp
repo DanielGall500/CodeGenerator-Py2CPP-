@@ -29,7 +29,7 @@ std::string Parser::generatePRINT(std::string strToPrint)
 	return "std::cout << \"" + strToPrint + "\" << std::endl;";
 }
 
-void Parser::Parse(std::vector<char> &input, std::vector<char> output)
+void Parser::Parse(std::vector<char> &input)
 {
 	if (!input.empty())
 	{
@@ -64,6 +64,8 @@ void Parser::Parse(std::vector<char> &input, std::vector<char> output)
 	}
 
 	generatedCode.push_back("}"); //must be final line in generated code
+
+	generateBoilerPlate();
 }
 
 void Parser::generateBoilerPlate()
@@ -107,4 +109,39 @@ void Parser::generateBoilerPlate()
 void Parser::addLine(int numWhere)
 {
 	generatedCode.insert(generatedCode.begin() += numWhere, "/whitespace/");
+}
+
+void Parser::stream(std::string directory)
+{
+	streamOut.open(directory, std::ios::out);
+
+	if (streamOut.is_open())
+	{
+		for (std::string line : generatedCode)
+		{
+			if (line == "/whitespace/")
+			{
+				streamOut << std::endl;
+			}
+			else
+			{
+				streamOut << line << std::endl;
+			}
+		}
+		streamOut.close();
+	}
+	else
+	{
+		std::cout << "File Wont Open: " << directory << std::endl;
+	}
+}
+
+void Parser::setPrintCommand(std::string command)
+{
+	commandPrint = command;
+}
+
+std::string Parser::getPrintCommand()
+{
+	return commandPrint;
 }

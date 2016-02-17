@@ -2,12 +2,13 @@
 //
 
 #include "stdafx.h"
+#include "Parser.h"
+
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <sstream>
-
 
 using namespace std;
 
@@ -22,6 +23,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	vector<char> byteVector(0);
 
 	string line;
+
+	//INPUT
 	
 	input.open(inputDir, ios::in);
 
@@ -46,6 +49,14 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << c;
 	}
 
+
+	//OUTPUT
+	Parser parser;
+
+	parser.Parse(byteVector);
+	parser.generateBoilerPlate();
+
+	parser.stream(outputDir);
 
 
 	cin.get();
