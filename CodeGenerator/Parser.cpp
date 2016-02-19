@@ -24,9 +24,9 @@ COLLECT
 PRINT
 */
 
-std::string Parser::generatePRINT(std::string strToPrint)
+std::string Parser::generateCOUT(std::string strToPrint)
 {
-	return "cout << \"" + strToPrint + "\" << endl;";
+	return indentLvl1 + "cout << \"" + strToPrint + "\" << endl;";
 }
 
 void Parser::Parse(std::vector<char> &input)
@@ -55,8 +55,14 @@ void Parser::Parse(std::vector<char> &input)
 	{
 		if (word == commandPrint)
 		{
-			unsigned int printVal = iter + 1;
-			generatedCode.push_back(generatePRINT(wordBuffer[printVal]));
+			std::cout << std::endl << "preparing for print statement" << std::endl;
+
+			unsigned int printVal = iter + 1; //the next index in the vector
+			std::cout << "buffer location for word to print:" << printVal << std::endl;
+
+			generatedCode.push_back(generateCOUT(wordBuffer[printVal]));
+			std::cout << "Pushed back: " << generateCOUT(wordBuffer[printVal]) << std::endl;
+
 			includes.push_back("<iostream>");
 		}
 

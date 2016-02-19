@@ -21,6 +21,7 @@ public:
 private:
 	//Commands
 	std::string commandPrint = "PRINT";
+	std::string commandComment = "@";
 
 
 	std::string indentLvl1 = "    ";
@@ -34,7 +35,7 @@ private:
 	std::string main;
     std::ofstream streamOut;
 
-	std::string generatePRINT(std::string strToPrint);
+	std::string generateCOUT(std::string strToPrint);
 	int findIndex(std::vector<std::string> vec, std::string element);
     void generateBoilerPlate();
 	void addLine(int numWhere);

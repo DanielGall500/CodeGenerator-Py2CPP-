@@ -25,17 +25,20 @@ int _tmain(int argc, _TCHAR* argv[])
 	string line;
 
 	//INPUT
-	
 	input.open(inputDir, ios::in);
 
 	if (input.is_open())
 	{
         while (getline(input, line))
-		{
+		{ 
+			if (line[0] == '@') //basic comments handled
+				continue;
+
             for (char &c : line)
 			{
 				byteVector.push_back(c);
 				cout << "Pushed Back: " << c << endl;
+
 			}
 		}
 
@@ -50,12 +53,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	//OUTPUT
-	Parser parser; // Working
+	Parser parser;
 
-	parser.Parse(byteVector); // problem with GENERATEBOILERCODE?
+	parser.Parse(byteVector); 
 
-	parser.stream(outputDir); // Working
-
+	parser.stream(outputDir); 
 
 	cin.get();
 
