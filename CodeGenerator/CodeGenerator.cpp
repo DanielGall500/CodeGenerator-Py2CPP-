@@ -14,8 +14,8 @@ using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	string inputDir = "C:/Users/dano/Desktop/CodeGenerator/input.txt";
-	string outputDir = "C:/Users/dano/Desktop/CodeGenerator/output.txt";
+	string inputDir = "C:/Users/dano/Desktop/CodeGenerator/Input.txt";
+	string outputDir = "C:/Users/dano/Desktop/CodeGenerator/Output.txt";
 
 	ifstream input;
 	ofstream output;
@@ -49,14 +49,12 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << c;
 	}
 
-
 	//OUTPUT
-	Parser parser;
+	Parser parser; // Working
 
-	parser.Parse(byteVector);
-	parser.generateBoilerPlate();
+	parser.Parse(byteVector); // problem with GENERATEBOILERCODE?
 
-	parser.stream(outputDir);
+	parser.stream(outputDir); // Working
 
 
 	cin.get();

@@ -18,7 +18,7 @@ int Parser::findIndex(std::vector<std::string> vec, std::string element)
 }
 
 /*
-Commands:
+TODO:
 CREATE
 COLLECT
 PRINT
@@ -26,7 +26,7 @@ PRINT
 
 std::string Parser::generatePRINT(std::string strToPrint)
 {
-	return "std::cout << \"" + strToPrint + "\" << std::endl;";
+	return "cout << \"" + strToPrint + "\" << endl;";
 }
 
 void Parser::Parse(std::vector<char> &input)
@@ -55,7 +55,8 @@ void Parser::Parse(std::vector<char> &input)
 	{
 		if (word == commandPrint)
 		{
-			generatedCode.push_back(generatePRINT(wordBuffer[iter++]));
+			unsigned int printVal = iter + 1;
+			generatedCode.push_back(generatePRINT(wordBuffer[printVal]));
 			includes.push_back("<iostream>");
 		}
 
@@ -63,9 +64,10 @@ void Parser::Parse(std::vector<char> &input)
 		iter++;
 	}
 
+	generateBoilerPlate();
+
 	generatedCode.push_back("}"); //must be final line in generated code
 
-	generateBoilerPlate();
 }
 
 void Parser::generateBoilerPlate()
@@ -73,24 +75,26 @@ void Parser::generateBoilerPlate()
 	int linesUsed = 0;
 
 	//handle includes
-	for (unsigned int i = 0; i <= includes.size(); i++)
+	for (unsigned int i = 0; i <= (includes.size() - 1); i++)
 	{
-		std::string incStatement = "#include " + includes[i] + ";";
-		generatedCode.insert(generatedCode.begin() += i, incStatement);
+		std::string incStatement = "#include " + includes[i];
 
-		if (i == includes.size())
+		if (std::find(generatedCode.begin(), generatedCode.end(), incStatement) == generatedCode.end())
+			generatedCode.insert(generatedCode.begin() + i, incStatement);
+
+		if (i == includes.size() - 1)
 			addLine(i + 1);
 
 		linesUsed = i;
 	}
 
 	//handle namespaces
-	for (unsigned int i = 1; i <= namespaces.size(); i++)
+	for (unsigned int i = 0; i <= (namespaces.size() - 1); i++)
 	{
 		std::string namespc = "using namespace " + namespaces[i] + ";";
 		generatedCode.insert(generatedCode.begin() += (linesUsed + i), namespc);
 
-		if (i == namespaces.size())
+		if (i == namespaces.size() - 1)
 		{
 			linesUsed += i + 1;
 			addLine(linesUsed);
@@ -100,10 +104,12 @@ void Parser::generateBoilerPlate()
 	//handle main function
 	main = "int main()";
 
+	
 	linesUsed++;
 	generatedCode.insert(generatedCode.begin() += linesUsed, main);
 	linesUsed++;
 	generatedCode.insert(generatedCode.begin() += linesUsed, "{");
+
 }
 
 void Parser::addLine(int numWhere)
@@ -121,7 +127,7 @@ void Parser::stream(std::string directory)
 		{
 			if (line == "/whitespace/")
 			{
-				streamOut << std::endl;
+				streamOut << "\n";
 			}
 			else
 			{

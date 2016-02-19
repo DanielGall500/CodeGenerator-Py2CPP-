@@ -23,6 +23,8 @@ private:
 	std::string commandPrint = "PRINT";
 
 
+	std::string indentLvl1 = "    ";
+
     std::vector<std::string> wordBuffer;
 	std::vector<std::string> generatedCode;
 
