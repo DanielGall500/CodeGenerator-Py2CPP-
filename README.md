@@ -1,11 +1,10 @@
-# Code Generator
+# Python to C++ Code Generator
 
-This program will parse a custom programming language (can be changed from within the code very easily) into C++ code, which can then
-be executed.
-It can be used to allow people who do not have much familiarity with any programming to do basic tasks
+This program takes python code as input, parses the code, and outputs it as C++
 
 ----
 
 The current commands in the custom programming language are as follows:
-* PRINT - is parsed into cout from the std library
-* @ - used to comment lines in the input
+* print - is parsed into cout from the std library
+* # - used to comment lines in the input
+* variables - will take variables as input
