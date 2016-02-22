@@ -53,17 +53,21 @@ void Parser::Parse(std::vector<char> &input)
 	unsigned int iter = 0;
 	for (std::string word : wordBuffer)
 	{
+		unsigned int preVal = iter - 1;
+		unsigned int nextVal = iter + 1;
+
 		if (word == commandPrint)
 		{
-			std::cout << std::endl << "preparing for print statement" << std::endl;
-
 			unsigned int printVal = iter + 1; //the next index in the vector
-			std::cout << "buffer location for word to print:" << printVal << std::endl;
 
 			generatedCode.push_back(generateCOUT(wordBuffer[printVal]));
-			std::cout << "Pushed back: " << generateCOUT(wordBuffer[printVal]) << std::endl;
 
 			includes.push_back("<iostream>");
+		}
+
+		if (word == commandVar)
+		{
+			generateVARIABLE(wordBuffer[preVal], wordBuffer[nextVal]);
 		}
 
 
@@ -156,4 +160,35 @@ void Parser::setPrintCommand(std::string command)
 std::string Parser::getPrintCommand()
 {
 	return commandPrint;
+}
+
+std::string Parser::generateVARIABLE(std::string varName, std::string value)
+{
+	varType valueType;
+	std::string type;
+
+	if (isdigit(value[0]))
+		valueType = INT;
+    else if (value == "true" || value == "false")
+		valueType = BOOL;
+    else
+		valueType = STRING;
+
+	if (valueType == INT)
+	{
+		int convertedValue = int(&value);
+		type = "int";
+	}
+	else if (valueType == BOOL)
+	{
+		bool convertedValue = bool(&value);
+		type = "bool";
+	}
+	else //string
+	{
+		std::string convertedValue = value; 
+		type = "string";
+	}
+	
+	return type + " " + varName + " = " + value + ";";
 }

@@ -4,6 +4,14 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <ctype.h>
+
+enum varType
+{
+	INT,
+	BOOL,
+	STRING
+};
 
 class Parser
 {
@@ -20,8 +28,9 @@ public:
 
 private:
 	//Commands
-	std::string commandPrint = "PRINT";
-	std::string commandComment = "@";
+	std::string commandPrint = "print";
+	std::string commandComment = "#";
+	std::string commandVar = "=";
 
 
 	std::string indentLvl1 = "    ";
@@ -36,7 +45,10 @@ private:
     std::ofstream streamOut;
 
 	std::string generateCOUT(std::string strToPrint);
+	std::string generateVARIABLE(std::string varName, std::string value);
+
 	int findIndex(std::vector<std::string> vec, std::string element);
+
     void generateBoilerPlate();
 	void addLine(int numWhere);
 
