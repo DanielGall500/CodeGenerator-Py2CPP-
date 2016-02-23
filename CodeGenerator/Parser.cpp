@@ -67,7 +67,8 @@ void Parser::Parse(std::vector<char> &input)
 
 		if (word == commandVar)
 		{
-			generateVARIABLE(wordBuffer[preVal], wordBuffer[nextVal]);
+			std::string generated = (wordBuffer[preVal], wordBuffer[nextVal]);
+			generatedCode.push_back(generated);
 		}
 
 
