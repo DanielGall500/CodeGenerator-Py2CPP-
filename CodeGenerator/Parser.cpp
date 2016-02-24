@@ -31,6 +31,8 @@ std::string Parser::generateCOUT(std::string strToPrint)
 
 void Parser::Parse(std::vector<char> &input)
 {
+	generateBoilerPlate();
+
 	if (!input.empty())
 	{
 		includes.push_back("\"stdafx.h\"");
@@ -67,7 +69,8 @@ void Parser::Parse(std::vector<char> &input)
 
 		if (word == commandVar)
 		{
-			std::string generated = (wordBuffer[preVal], wordBuffer[nextVal]);
+			std::string generated = generateVARIABLE(wordBuffer[preVal], wordBuffer[nextVal]);
+			std::cout << generated << std::endl;
 			generatedCode.push_back(generated);
 		}
 
@@ -75,51 +78,76 @@ void Parser::Parse(std::vector<char> &input)
 		iter++;
 	}
 
-	generateBoilerPlate();
-
-	generatedCode.push_back("}"); //must be final line in generated code
+	//generatedCode.push_back("}"); //must be final line in generated code
 
 }
 
 void Parser::generateBoilerPlate()
 {
-	int linesUsed = 0;
+	//int linesUsed = 0;
 
-	//handle includes
-	for (unsigned int i = 0; i <= (includes.size() - 1); i++)
+	////handle includes
+	//for (unsigned int i = 0; i <= (includes.size() - 1); i++)
+	//{
+	//	std::string incStatement = "#include " + includes[i];
+
+	//	if (std::find(generatedCode.begin(), generatedCode.end(), incStatement) == generatedCode.end())
+	//		generatedCode.insert(generatedCode.begin() + i, incStatement);
+
+	//	if (i == includes.size() - 1)
+	//		addLine(i + 1);
+
+	//	linesUsed = i;
+	//}
+
+	////handle namespaces
+	//for (unsigned int i = 0; i <= (namespaces.size() - 1); i++)
+	//{
+	//	std::string namespc = "using namespace " + namespaces[i] + ";";
+	//	generatedCode.insert(generatedCode.begin() += (linesUsed + i), namespc);
+
+	//	if (i == namespaces.size() - 1)
+	//	{
+	//		linesUsed += i + 1;
+	//		addLine(linesUsed);
+	//	}
+	//}
+
+	////handle main function
+	//main = "int main()";
+
+	//
+	//linesUsed++;
+	//generatedCode.insert(generatedCode.begin() += linesUsed, main);
+	//linesUsed++;
+	//generatedCode.insert(generatedCode.begin() += linesUsed, "{");
+	int mainfLines = 2, refactoringLines = 2;
+
+	int totalLinesAllowed = includes.size() + namespaces.size() + mainfLines + refactoringLines;
+	std::cout << "Total lines allowed: " + totalLinesAllowed << std::endl;
+
+	for (unsigned int i = 0; i <= totalLinesAllowed; i++)
 	{
-		std::string incStatement = "#include " + includes[i];
-
-		if (std::find(generatedCode.begin(), generatedCode.end(), incStatement) == generatedCode.end())
-			generatedCode.insert(generatedCode.begin() + i, incStatement);
-
-		if (i == includes.size() - 1)
-			addLine(i + 1);
-
-		linesUsed = i;
-	}
-
-	//handle namespaces
-	for (unsigned int i = 0; i <= (namespaces.size() - 1); i++)
-	{
-		std::string namespc = "using namespace " + namespaces[i] + ";";
-		generatedCode.insert(generatedCode.begin() += (linesUsed + i), namespc);
-
-		if (i == namespaces.size() - 1)
+		for (unsigned int j = 0; j <= (includes.size() - 1); j++)
 		{
-			linesUsed += i + 1;
-			addLine(linesUsed);
+			std::string incStatement = "#include " + includes[j];
+
+
+			if (std::find(includes.begin(), includes.end(), incStatement) == includes.end())
+			{
+				generatedCode[i] = incStatement;
+				i++;
+			}
+			else 
+			{
+				generatedCode[i] = incStatement;
+				includes.erase(includes.begin() + j);
+			}
+
 		}
+
+
 	}
-
-	//handle main function
-	main = "int main()";
-
-	
-	linesUsed++;
-	generatedCode.insert(generatedCode.begin() += linesUsed, main);
-	linesUsed++;
-	generatedCode.insert(generatedCode.begin() += linesUsed, "{");
 
 }
 
@@ -191,5 +219,5 @@ std::string Parser::generateVARIABLE(std::string varName, std::string value)
 		type = "string";
 	}
 	
-	return type + " " + varName + " = " + value + ";";
+	return indentLvl1 + type + " " + varName + " = " + value + ";";
 }
